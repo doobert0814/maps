@@ -1,46 +1,65 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Display a map</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>map</title>
+  <style>
+    body { margin: 0; padding: 0; }
+    
+    #viewDiv {
+      border: 2px solid black;
+      padding: 0;
+      margin: 100px;
+      height: 500px;
+      width: 500px;
+      box-sizing: content-box;
+      position: absolute; top: 0; bottom: 0;
+    }
 
-    <style>
-      body { margin: 0; padding: 0; }
-      #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-      #viewDiv {
-        border:2px solid black;
-        padding: 0;
-        margin: 100;
-        height: 500px;
-        width: 500px;
-        box-sizing: content-box;
-      }
-    </style>
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.19/"></script>
 
-    <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css">
-    <script src="https://js.arcgis.com/4.19/"></script>
+  <script>
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
 
-    <script>
-      require(["esri/config","esri/Map", "esri/views/MapView"], function (esriConfig,Map, MapView) {
+    "esri/layers/FeatureLayer"
 
-        esriConfig.apiKey = "AAPKd4b38debd1524ab5b5b0568f15ac30df0VNnVrIg85d9dC3cfimwBON9Jgc9HYiRdYvPn4NaeBtyMSxg0Wq4K2vNFkWTiv0E";
+  ], function(esriConfig,Map, MapView, FeatureLayer) {
 
-        const map = new Map({
-          basemap: "arcgis-topographic" // Basemap layer service
-        });
+  esriConfig.apiKey = "AAPKd4b38debd1524ab5b5b0568f15ac30df0VNnVrIg85d9dC3cfimwBON9Jgc9HYiRdYvPn4NaeBtyMSxg0Wq4K2vNFkWTiv0E";
 
-        const view = new MapView({
-          map: map,
-          center: [-118.805, 34.027], // Longitude, latitude
-          zoom: 13, // Zoom level
-          container: "viewDiv" // Div element
-        });
+  const map = new Map({
+    basemap: "arcgis-topographic"
+  });
 
-      });
-    </script>
+  const view = new MapView({
+    container: "viewDiv",
+    map: map,
+    center: [-118.80543,34.02700],
+    zoom: 13
+  });
 
-  </head>
-  <body>
-    <div id="viewDiv"></div>
-  </body>
+  const trailheadsLayer = new FeatureLayer({
+    url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0"
+  });
+
+  map.add(trailheadsLayer);
+
+  const trailsLayer = new FeatureLayer({
+    url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trails_Styled/FeatureServer/0"
+  });
+
+  map.add(trailsLayer, 0);
+
+  });
+</script>
+
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
 </html>
